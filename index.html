@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button{
+  font-family:"arial";
+  font-weight:900;
+  color:white;
+/*   display:block; */
+/*   margin: 0 auto; */
+  background: transparent;
+  border: none;
+  border-radius: .75em;
+  padding:.75em;
+  font-size:1.5em;
+  text-shadow: 0px 0px 10px rgba(0,0,0,0.3); 
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+}
+
+button:focus{
+  outline: none;
+  border:3px solid white;
+}
+
+p{
+    font-family:"arial";
+    text-align:center;
+     font-weight:600;
+  font-size:.95em;
+  background:rgba(255, 255, 255, 0.8);
+  width:9em;
+  padding:.7em;
+/*   margin:0 auto; */
+  border-radius:.75em;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+/*   margin-top:1em; */
+}
+
+
+.center-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+    </style>
+</head>
+
+<body>
+
+    <div class="center-screen">
+        <button id="newColor">RANDOM COLOR</button>
+        <p id="color"></p>
+    </div>
+
+    <script>
+        const setBg = () => {
+            const colorArray = [];
+
+            for (let i = 0; i < 3; i++) {
+                colorArray.push(Math.floor(Math.random() * 256))
+            }
+
+            const randomColor = `rgb(${colorArray[0]}, ${colorArray[1]}, ${colorArray[2]})`
+            document.body.style.backgroundColor = randomColor;
+
+            color.innerHTML = randomColor;
+            if (colorArray[0] + colorArray[1] + colorArray[2] <= 500) {
+                color.style.color = randomColor;
+            } else {
+                color.style.color = "gray";
+            }
+        }
+
+        document.getElementById("newColor").addEventListener("click", setBg);
+        setBg();
+    </script>
+</body>
+
+</html>
