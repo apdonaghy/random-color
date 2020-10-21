@@ -19,11 +19,18 @@
   font-size:1.5em;
   text-shadow: 0px 0px 10px rgba(0,0,0,0.3); 
   box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+  cursor:pointer;
 }
 
 button:focus{
   outline: none;
   border:3px solid white;
+  transition: .2s;
+}
+
+button:hover{
+  background:rgba(0,0,0,0.1);
+  transition: .2s;
 }
 
 p{
@@ -48,6 +55,7 @@ p{
   align-items: center;
   text-align: center;
   min-height: 100vh;
+
 }
 .circle{
   width:2em;
@@ -55,12 +63,14 @@ p{
   border-radius: 50%;
   margin:.25em;
   box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+  
 }
 
 .previousColors{
   display:flex;
   margin:0 auto;
 }
+
 
     </style>
 </head>
@@ -106,9 +116,6 @@ p{
           container.appendChild(colorCircle)
           colorCircle.setAttribute('class', 'circle')
           colorCircle.style.backgroundColor = recentColor;
-  
-
-
         }
 
         document.getElementById("newColor").addEventListener("click", setBg);
