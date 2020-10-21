@@ -49,17 +49,38 @@ p{
   text-align: center;
   min-height: 100vh;
 }
+.circle{
+  width:2em;
+  height:2em;
+  border-radius: 50%;
+  margin:.25em;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+}
+
+.previousColors{
+  display:flex;
+  margin:0 auto;
+}
+
     </style>
 </head>
 
 <body>
 
-    <div class="center-screen">
+    <div id="container" class="center-screen">
         <button id="newColor">RANDOM COLOR</button>
         <p id="color"></p>
+        <div class="previousColors"></div>
     </div>
 
     <script>
+
+        const colorsArray = []
+     
+        const container = document.querySelector(".previousColors")
+
+   
+
         const setBg = () => {
             const colorArray = [];
 
@@ -71,11 +92,23 @@ p{
             document.body.style.backgroundColor = randomColor;
 
             color.innerHTML = randomColor;
+
             if (colorArray[0] + colorArray[1] + colorArray[2] <= 500) {
                 color.style.color = randomColor;
             } else {
                 color.style.color = "gray";
             }
+            colorsArray.push(randomColor)
+          
+          const recentColor = colorsArray[colorsArray.length -1]
+        
+          let colorCircle = document.createElement('div')
+          container.appendChild(colorCircle)
+          colorCircle.setAttribute('class', 'circle')
+          colorCircle.style.backgroundColor = recentColor;
+  
+
+
         }
 
         document.getElementById("newColor").addEventListener("click", setBg);
