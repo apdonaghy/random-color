@@ -6,30 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Random RGB</title>
   <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;900&display=swap" rel="stylesheet">
   <style>
     *{
       transition: .2s;
-      font-family: 'IBM Plex Serif', serif;
+      font-family: 'Raleway', sans-serif;
+
     }
     button {
-      
       font-weight: 700;
       color: white;
       /*   display:block; */
       /*   margin: 0 auto; */
-      height:7em;
+      height:7em;    
       width:7em;
       background: transparent;
       border: none;
       border-radius: 50%;
-      padding: .75em;
-      font-size: 3em;
+      padding: .5em;
+      font-size: 2.25em;
       text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
       border: 3px solid rgba(0, 0, 0, 0.2);
       cursor: pointer;
-      margin-bottom:15px;
+      margin-bottom:20px;
     }
 
     button:focus {
@@ -81,13 +81,25 @@
     }
 
     .circle:hover{
-      transform: scale(1.1); 
+      transform: scale(1.2); 
       border:2px solid white;
     }
 
     .previousColors {
       display: flex;
       margin: 0 auto;
+    }
+
+    #color {
+      cursor: pointer;
+    }
+
+    #clipboard{
+      visibility: hidden;
+      background: rgba(255, 255, 255, 0.8);
+      padding:7px;
+      border-radius: 5px;
+      margin-top:20px;
     }
   </style>
 </head>
@@ -97,7 +109,11 @@
   <div id="container" class="center-screen">
     <button id="newColor">Random <br>RGB</button>
     <div class="previousColors"></div>
-    <p id="color"></p>
+    <span id="clipboard">copy to clipboard</span>
+    <p onmouseover="document.getElementById('clipboard').style.visibility = 'visible';" 
+    onmouseout="document.getElementById('clipboard').style.visibility = 'hidden';"
+    id="color"></p>
+    
   </div>
 
   <script>
@@ -157,6 +173,23 @@
 
 
     }
+
+
+    const color2 = document.getElementById("color");
+
+  color2.onclick = function() {
+  document.execCommand("copy");
+}
+
+color2.addEventListener("copy", function(event) {
+  event.preventDefault();
+  if (event.clipboardData) {
+    event.clipboardData.setData("text/plain", color2.textContent);
+    console.log(event.clipboardData.getData("text"))
+  }
+});
+
+  
 
     document.getElementById("newColor").addEventListener("click", setBg);
 
