@@ -75,7 +75,7 @@
       border-radius: 50%;
       margin: .25em;
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-      border:solid 2px  rgba(0, 0, 0, 0);
+      border:solid 2px  rgba(255, 255, 255, 0.1);
       transition: all .2s ease-in-out;
     }
 
@@ -85,6 +85,7 @@
     }
 
     .circle:focus{
+      outline:none;
       transform: scale(1.2); 
       border:2px solid white;
     }
@@ -105,17 +106,27 @@
       border-radius: 5px;
       margin-top:20px;
     }
+    .plus{
+      font-weight: 300;
+      font-size: 2em;
+      display:block;
+      line-height: .5em;
+    }
   </style>
 </head>
 
 <body>
 
-  <div id="container" class="center-screen">
-    <button id="newColor">Random <br>RGB</button>
+  <div onclick="document.getElementById('clipboard').style.visibility = 'hidden';" id="container" class="center-screen">
+    <button id="newColor"><span class="plus">+</span>Random <br>RGB</button>
     <div class="previousColors"></div>
     <span id="clipboard">copy to clipboard</span>
-    <p tabindex="0" onmouseover && onfocus="document.getElementById('clipboard').style.visibility = 'visible';" 
-    onmouseout && onkeydown="document.getElementById('clipboard').style.visibility = 'hidden';"
+    <p 
+    tabindex="0" 
+    onmouseover="document.getElementById('clipboard').style.visibility = 'visible';" 
+    onfocus="document.getElementById('clipboard').style.visibility = 'visible';" 
+    onmouseout="document.getElementById('clipboard').style.visibility = 'hidden';"  
+    onkeydown="document.getElementById('clipboard').style.visibility = 'hidden';"
     id="color"></p>
     
   </div>
