@@ -2,125 +2,167 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        button{
-  font-family:"arial";
-  font-weight:900;
-  color:white;
-/*   display:block; */
-/*   margin: 0 auto; */
-  background: transparent;
-  border: none;
-  border-radius: .75em;
-  padding:.75em;
-  font-size:1.5em;
-  text-shadow: 0px 0px 10px rgba(0,0,0,0.3); 
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
-  cursor:pointer;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random RGB</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    *{
+      transition: .2s;
+      font-family: 'IBM Plex Serif', serif;
+    }
+    button {
+      
+      font-weight: 700;
+      color: white;
+      /*   display:block; */
+      /*   margin: 0 auto; */
+      height:7em;
+      width:7em;
+      background: transparent;
+      border: none;
+      border-radius: 50%;
+      padding: .75em;
+      font-size: 3em;
+      text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+      border: 3px solid rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      margin-bottom:15px;
+    }
 
-button:focus{
-  outline: none;
-  border:3px solid white;
-  transition: .2s;
-}
+    button:focus {
+      outline: none;
+      border: 3px solid white;
+    }
 
-button:hover{
-  background:rgba(0,0,0,0.1);
-  transition: .2s;
-}
+    button:hover {
+      background: rgba(0, 0, 0, 0.1);
+      transition: .2s;
+    }
 
-p{
-    font-family:"arial";
-    text-align:center;
-     font-weight:600;
-  font-size:.95em;
-  background:rgba(255, 255, 255, 0.8);
-  width:9em;
-  padding:.7em;
-/*   margin:0 auto; */
-  border-radius:.75em;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
-/*   margin-top:1em; */
-}
-
-
-.center-screen {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 100vh;
-
-}
-.circle{
-  width:2em;
-  height:2em;
-  border-radius: 50%;
-  margin:.25em;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
-  
-}
-
-.previousColors{
-  display:flex;
-  margin:0 auto;
-}
+    p {
+    
+      text-align: center;
+      font-weight: 300;
+      font-size: 1.5em;
+      background: rgba(255, 255, 255, 0.8);
+      padding: .7em;
+      /*   margin:0 auto; */
+      border-radius: .75em;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
+      /*   margin-top:1em; */
+      position:fixed;
+      bottom:0;
+      margin-bottom:0px;
+      width: 100%
+    }
 
 
-    </style>
+    .center-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 100vh;
+
+    }
+
+    .circle {
+      width: 2em;
+      height: 2em;
+      border-radius: 50%;
+      margin: .25em;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+      border:solid 2px  rgba(0, 0, 0, 0);
+      transition: all .2s ease-in-out;
+    }
+
+    .circle:hover{
+      transform: scale(1.1); 
+      border:2px solid white;
+    }
+
+    .previousColors {
+      display: flex;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 
 <body>
 
-    <div id="container" class="center-screen">
-        <button id="newColor">RANDOM COLOR</button>
-        <p id="color"></p>
-        <div class="previousColors"></div>
-    </div>
+  <div id="container" class="center-screen">
+    <button id="newColor">Random <br>RGB</button>
+    <div class="previousColors"></div>
+    <p id="color"></p>
+  </div>
 
-    <script>
+  <script>
+    const colorsArray = []
+    const container = document.querySelector(".previousColors")
 
-        const colorsArray = []
-     
-        const container = document.querySelector(".previousColors")
 
-   
 
-        const setBg = () => {
-            const colorArray = [];
+    const setBg = () => {
 
-            for (let i = 0; i < 3; i++) {
-                colorArray.push(Math.floor(Math.random() * 256))
-            }
+      let colorCircle;
+      container.innerHTML = '';
+      const colorArray = [];
 
-            const randomColor = `rgb(${colorArray[0]}, ${colorArray[1]}, ${colorArray[2]})`
-            document.body.style.backgroundColor = randomColor;
+      for (let i = 0; i < 3; i++) {
+        colorArray.push(Math.floor(Math.random() * 256))
+      }
 
-            color.innerHTML = randomColor;
+      const randomColor = `rgb(${colorArray[0]}, ${colorArray[1]}, ${colorArray[2]})`
+      document.body.style.backgroundColor = randomColor;
 
-            if (colorArray[0] + colorArray[1] + colorArray[2] <= 500) {
-                color.style.color = randomColor;
-            } else {
-                color.style.color = "gray";
-            }
-            colorsArray.push(randomColor)
-          
-          const recentColor = colorsArray[colorsArray.length -1]
-        
-          let colorCircle = document.createElement('div')
-          container.appendChild(colorCircle)
-          colorCircle.setAttribute('class', 'circle')
-          colorCircle.style.backgroundColor = recentColor;
-        }
+      color.innerHTML = randomColor;
 
-        document.getElementById("newColor").addEventListener("click", setBg);
-        setBg();
-    </script>
+      if (colorArray[0] + colorArray[1] + colorArray[2] <= 500) {
+        color.style.color = randomColor;
+      } else {
+        color.style.color = "gray";
+      }
+
+      colorsArray.push(randomColor)
+
+      for (let individualColor of colorsArray) {
+
+        colorCircle = document.createElement('div')
+        container.appendChild(colorCircle)
+        colorCircle.setAttribute('class', 'circle');
+        colorCircle.style.cursor = 'pointer';
+        colorCircle.addEventListener("click", chngBkgrnd);
+        colorCircle.style.backgroundColor = individualColor;
+
+      }
+
+
+      if (colorsArray.length > 7) {
+        colorsArray.shift()
+      }
+
+
+
+    }
+
+    const chngBkgrnd = function (e) {
+      document.body.style.backgroundColor = e.target.style.backgroundColor;
+      color.innerHTML = e.target.style.backgroundColor;
+
+      color.style.color = e.target.style.backgroundColor
+
+
+    }
+
+    document.getElementById("newColor").addEventListener("click", setBg);
+
+
+    setBg();
+  </script>
 </body>
 
 </html>
