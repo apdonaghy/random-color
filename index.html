@@ -43,7 +43,6 @@
     }
 
     p {
-    
       text-align: center;
       font-weight: 300;
       font-size: 1.5em;
@@ -85,6 +84,11 @@
       border:2px solid white;
     }
 
+    .circle:focus{
+      transform: scale(1.2); 
+      border:2px solid white;
+    }
+
     .previousColors {
       display: flex;
       margin: 0 auto;
@@ -110,8 +114,8 @@
     <button id="newColor">Random <br>RGB</button>
     <div class="previousColors"></div>
     <span id="clipboard">copy to clipboard</span>
-    <p onmouseover="document.getElementById('clipboard').style.visibility = 'visible';" 
-    onmouseout="document.getElementById('clipboard').style.visibility = 'hidden';"
+    <p tabindex="0" onmouseover && onfocus="document.getElementById('clipboard').style.visibility = 'visible';" 
+    onmouseout && onkeydown="document.getElementById('clipboard').style.visibility = 'hidden';"
     id="color"></p>
     
   </div>
@@ -150,14 +154,16 @@
         colorCircle = document.createElement('div')
         container.appendChild(colorCircle)
         colorCircle.setAttribute('class', 'circle');
+        colorCircle.tabIndex=0;
         colorCircle.style.cursor = 'pointer';
         colorCircle.addEventListener("click", chngBkgrnd);
+        colorCircle.addEventListener("keypress", chngBkgrnd);
         colorCircle.style.backgroundColor = individualColor;
 
       }
 
 
-      if (colorsArray.length > 7) {
+      if (colorsArray.length > 6) {
         colorsArray.shift()
       }
 
