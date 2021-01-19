@@ -112,6 +112,23 @@
       display:block;
       line-height: .5em;
     }
+    .addBtn{
+      display:block;
+      margin: 0 auto;
+      margin-top: .3em;
+      color: black;
+      font-size: 1.5em;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      width:1em;
+      height:1em;
+      line-height: 1.1em;
+    }
+    .addBtn:hover{
+      background-color: white;
+    }
+
+
   </style>
 </head>
 
@@ -133,8 +150,16 @@
 
   <script>
     const colorsArray = []
-    const container = document.querySelector(".previousColors")
+    const savedColorsArray = [];
+    const container = document.querySelector(".previousColors");
 
+    function ifTooLight(array,randomC){
+      if (array[0] + array[1] + array[2] < 350) {
+        color.style.color = randomC;
+      } else {
+        color.style.color = "gray";
+      }
+    }
 
 
     const setBg = () => {
@@ -152,25 +177,30 @@
 
       color.innerHTML = randomColor;
 
-      if (colorArray[0] + colorArray[1] + colorArray[2] <= 500) {
-        color.style.color = randomColor;
-      } else {
-        color.style.color = "gray";
-      }
+
+      ifTooLight(colorArray, randomColor)
+
 
       colorsArray.push(randomColor)
 
       for (let individualColor of colorsArray) {
-
+        const outerDiv = document.createElement('div')
+        container.appendChild(outerDiv)
         colorCircle = document.createElement('div')
-        container.appendChild(colorCircle)
+        outerDiv.appendChild(colorCircle)
         colorCircle.setAttribute('class', 'circle');
         colorCircle.tabIndex=0;
         colorCircle.style.cursor = 'pointer';
         colorCircle.addEventListener("click", chngBkgrnd);
         colorCircle.addEventListener("keypress", chngBkgrnd);
         colorCircle.style.backgroundColor = individualColor;
-
+        const addBtn = document.createElement('span')
+        outerDiv.appendChild(addBtn)
+        addBtn.innerHTML = "+"
+        addBtn.setAttribute('class', 'addBtn')
+        addBtn.style.cursor = 'pointer';
+        addBtn.addEventListener("click", pshToSavedColors);
+        addBtn.addEventListener("keypress", pshToSavedColors);
       }
 
 
@@ -182,15 +212,32 @@
 
     }
 
-    const chngBkgrnd = function (e) {
-      document.body.style.backgroundColor = e.target.style.backgroundColor;
-      color.innerHTML = e.target.style.backgroundColor;
 
-      color.style.color = e.target.style.backgroundColor
-
-
+    const pshToSavedColors = function(e){
+      const circleBack3 = e.target.previousSibling;
+      savedColorsArray.push(circleBack3.style.backgroundColor);
+      console.log(savedColorsArray)
     }
 
+
+    const chngBkgrnd = function(e) {
+      document.body.style.backgroundColor = e.target.style.backgroundColor;
+      const circleBack = e.target.style.backgroundColor;
+      color.innerHTML = circleBack;
+      color.style.color = circleBack;
+      // ifTooLight(colorArray, randomColor)
+      let revisedString = circleBack.replace(/rgb/, '');  
+      let revisedString2 = revisedString.replace(/[()]/g,'');
+      let revisedStringArray = revisedString2.split(",");
+      let numArray = [];
+      for(let turnToNum of revisedStringArray){
+        numArray.push(parseInt(turnToNum, 10));
+      }
+
+      ifTooLight(numArray, circleBack)
+      
+
+    }
 
     const color2 = document.getElementById("color");
 
