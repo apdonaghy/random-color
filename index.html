@@ -65,8 +65,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      min-height: 100vh;
-
+      min-height: 90vh;
     }
 
     .circle {
@@ -122,17 +121,93 @@
       border-radius: 50%;
       width:1em;
       height:1em;
-      line-height: 1.1em;
+      line-height: 1em;
     }
     .addBtn:hover{
       background-color: white;
     }
+/* 
+   shelf  */
 
+   #orgColors{
+     position:fixed;
+     z-index: 2;
+     top:0;
+     right:0;
+     background-color:white;
+     box-shadow:5px 10px 18px rgba(0, 0, 0, 0.4);
+     height:100%;
+     cursor: default;
+     float:right;
+   }
+
+   .open{
+     cursor:pointer;
+     position:fixed;
+     right:0;
+     margin-right:20px;
+     font-size: 2.5em;
+     line-height: 1.05em;
+     background-color: rgba(255, 255, 255, 0.8);
+     border-radius: 50%;
+     width:.9em;
+     padding-left:12px;
+     padding-bottom:5px;
+     z-index: 2;
+   }
+
+   .open:hover{
+     color:rgba(255, 255, 255, 0.8);
+     background-color: black;
+   }
+
+   .close{
+     cursor:pointer;
+     position: relative;;
+     z-index: 2;
+     text-align: right;
+     line-height: 55px;
+    font-size: 40px;
+    font-weight: 600;
+    width:69%;
+    /* visibility: hidden; */
+   }
+
+   .close:hover{
+     color:white;
+   }
+
+   .closed{
+    width:0%;
+   }
+   .opened{
+     width:30%;
+   }
+
+   .colorSwatchStyle{
+     width:100%;
+     height:19.2%;
+     margin:5px;
+     /* height:18.5%;
+     padding:2.5%; */
+   }
+   #bigClose{
+    height: 100%;
+    width: 100%;
+   }
+   .flex{
+     display:flex;
+   }
 
   </style>
 </head>
 
 <body>
+  <span class="open"><</span>
+  <div class="flex">
+  <span class="close">x</span>
+  <div id="orgColors" class="closed"></div>
+  </div>
 
   <div onclick="document.getElementById('clipboard').style.visibility = 'hidden';" id="container" class="center-screen">
     <button id="newColor"><span class="plus">+</span>Random <br>RGB</button>
@@ -145,13 +220,17 @@
     onmouseout="document.getElementById('clipboard').style.visibility = 'hidden';"  
     onkeydown="document.getElementById('clipboard').style.visibility = 'hidden';"
     id="color"></p>
-    
+   
   </div>
+  <div id="bigClose"></div>
+
+
 
   <script>
     const colorsArray = []
     const savedColorsArray = [];
     const container = document.querySelector(".previousColors");
+    const orgColors = document.getElementById('orgColors');
 
     function ifTooLight(array,randomC){
       if (array[0] + array[1] + array[2] < 350) {
@@ -214,9 +293,23 @@
 
 
     const pshToSavedColors = function(e){
+      orgColors.innerHTML="";
       const circleBack3 = e.target.previousSibling;
-      savedColorsArray.push(circleBack3.style.backgroundColor);
-      console.log(savedColorsArray)
+      savedColorsArray.unshift(circleBack3.style.backgroundColor);
+      console.log(savedColorsArray);
+    
+      for(let color of savedColorsArray){
+        const colorSwatch = document.createElement('div');
+        orgColors.appendChild(colorSwatch);
+        colorSwatch.style.backgroundColor = color;
+        colorSwatch.setAttribute('class', 'colorSwatchStyle');
+      }
+
+      if (savedColorsArray.length > 4) {
+        
+        savedColorsArray.pop()
+      }
+     
     }
 
 
@@ -253,8 +346,24 @@ color2.addEventListener("copy", function(event) {
   }
 });
 
-  
+const openShelf = function(){
+ 
+  orgColors.classList.add('opened')
+  const close = document.querySelector('.close')
+  close.style.visibility = 'visible';
+}
 
+const closeShelf = function(){
+
+  orgColors.classList.remove('opened')
+  orgColors.classList.add('close')
+  const close = document.querySelector('.close')
+  close.style.visibility = 'hidden';
+}
+
+    document.querySelector("#bigClose").addEventListener('click', closeShelf)
+    document.querySelector(".close").addEventListener('click', closeShelf)
+    document.querySelector(".open").addEventListener('click', openShelf)
     document.getElementById("newColor").addEventListener("click", setBg);
 
 
