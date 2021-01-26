@@ -16,8 +16,6 @@
     button {
       font-weight: 700;
       color: white;
-      /*   display:block; */
-      /*   margin: 0 auto; */
       height:7em;    
       width:7em;
       background: transparent;
@@ -121,11 +119,47 @@
       border-radius: 50%;
       width:1em;
       height:1em;
+      padding-left:.05px;
       line-height: 1em;
+      border: 2px solid transparent;
+    }
+    .addBtn:focus{
+      outline:none;
+      border: 2px solid white;
     }
     .addBtn:hover{
       background-color: white;
     }
+
+    fieldset{
+  border: none;
+}
+output{
+  display: inline-block;
+  min-width: 2.5em;
+}
+label, output{
+  padding: 2px 9px;
+  border-radius: 3px;
+  font-family: 'Roboto', sans-serif;
+  color: #000;
+  font-size: 1.1em;
+}
+label[for=r], output[for=r]{
+  background-color: #f00;
+}
+label[for=g], output[for=g]{
+  background-color: #0f0;
+}
+label[for=b], output[for=b]{
+  background-color: #00f;
+}
+#hex{
+  min-width: 4.5em;
+  font-size: 3em;
+  background: rgba(255,255,255,.3);
+}
+
 /* 
    shelf  */
 
@@ -156,6 +190,11 @@
      padding-left:12px;
      padding-bottom:5px;
      z-index: 2;
+    border: 2px solid transparent;
+   }
+   .open:focus{
+     outline:none;
+     border: 2px solid black;
    }
 
    .open:hover{
@@ -180,6 +219,13 @@
     border-radius: 50%;
     width:48px;
     padding-bottom:7px;
+    border: 2px solid transparent;
+    
+   }
+
+   #close:focus{
+     outline:none;
+     border:2px solid black;
    }
 
    #close:hover{
@@ -207,10 +253,6 @@
      margin-bottom:10px;
    }
 
-   #bigClose{
-    height: 100%;
-    width: 100%;
-   }
    .flex{
      display:flex;
    }
@@ -222,23 +264,38 @@
      background-color: black;
      line-height: 2em;
      margin:100px 10px 10px 10px;
-     padding:0px 10px 4px 10px;
+     padding:0px 11px 4px 11px;
      border-radius: 50%;
      cursor: pointer;
+     border: 3px solid transparent;
+   }
+   .innerClose:focus{
+    outline:none;
+    border: 3px solid white;
+    
    }
    .innerClose:hover{
      background-color: white;
      color:black;
    }
 
+   .rgbNums{
+     font-size: 1em;
+     color:rgba(255, 255, 255, 0.7);
+     background-color:black;
+     padding:5px 10px 7px 10px;
+     border-radius: 5px;
+
+   }
+
   </style>
 </head>
 
 <body>
-  <span class="open"><</span>
+  <span tabindex="0" class="open"><</span>
   <div class="flex">
    <div class="closeDiv">
-  <span id="close">x</span>
+  <span tabindex="0" id="close">></span>
    </div> 
   <div id="orgColors" class="closed"></div>
   </div>
@@ -256,11 +313,13 @@
     id="color"></p>
    
   </div>
-  <div id="bigClose"></div>
+ 
 
 
 
   <script>
+    
+
     const colorsArray = []
     const savedColorsArray = [];
     const container = document.querySelector(".previousColors");
@@ -276,7 +335,7 @@
     }
 
 
-    const setBg = () => {
+    const setBg = function() {
 
       let colorCircle;
       container.innerHTML = '';
@@ -288,13 +347,9 @@
 
       const randomColor = `rgb(${colorArray[0]}, ${colorArray[1]}, ${colorArray[2]})`
       document.body.style.backgroundColor = randomColor;
-
       color.innerHTML = randomColor;
 
-
       ifTooLight(colorArray, randomColor)
-
-
       colorsArray.push(randomColor)
 
       for (let individualColor of colorsArray) {
@@ -311,6 +366,7 @@
         const addBtn = document.createElement('span')
         outerDiv.appendChild(addBtn)
         addBtn.innerHTML = "+"
+        addBtn.tabIndex=0;
         addBtn.setAttribute('class', 'addBtn')
         addBtn.style.cursor = 'pointer';
         addBtn.addEventListener("click", pshToSavedColors);
@@ -334,34 +390,92 @@
     }
 
     const pshToSavedColors = function(e){
-      // orgColors.innerHTML="";
-      const circleBack3 = e.target.previousSibling;
-      savedColorsArray.unshift(circleBack3.style.backgroundColor);
-      console.log(savedColorsArray);
       
-
-      // for(let color of savedColorsArray){
-        const colorSwatch = document.createElement('div');
+      const circleBack3 = e.target.previousSibling;
+      // if(savedColorsArray.indexOf(circleBack3.style.backgroundColor) > -1){
+      //   console.log('already added')
+      // } else{
+      savedColorsArray.push(circleBack3.style.backgroundColor);
+      // console.log(savedColorsArray);
+        
+      if(orgColors.childElementCount < 5){
+        var colorSwatch = document.createElement('div');
         orgColors.appendChild(colorSwatch);
         colorSwatch.setAttribute('data-index', savedColorsArray.length - 1);
         colorSwatch.style.backgroundColor = circleBack3.style.backgroundColor;
-        colorSwatch.setAttribute('class', 'colorSwatchStyle');
+        colorSwatch.setAttribute('class', 'colorSwatchStyle')
         const innerClose = document.createElement('span');
+        innerClose.tabIndex=0;
         innerClose.setAttribute('class', 'innerClose');
         innerClose.innerHTML='x'
         colorSwatch.appendChild(innerClose);
         innerClose.addEventListener("click", deleteColorSwatch);
         innerClose.addEventListener("keypress", deleteColorSwatch);
-      // }
-
-      // if (savedColorsArray.length > 4) {
         
-      //   savedColorsArray.pop()
-      // }
+        // const rgbSlider = document.createElement('span');
+        // rgbSlider.innerHTML = '<fieldset><label for="r">R</label><input type="range" min="0" max="255" id="r" step="1" value="0"><output for="r" id="r_out">0</output></fieldset><fieldset><label for="g">G</label><input type="range" min="0" max="255" id="g" step="1" value="0"><output for="g" id="g_out">0</output></fieldset><fieldset><label for="b">B</label><input type="range" min="0" max="255" id="b" step="1" value="0"><output for="b" id="b_out">0</output></fieldset>';
+
+        // rgbSlider.setAttribute('class', 'rgbNums')
+        // colorSwatch.appendChild(rgbSlider);
+      } else{
+        console.log('error');
+      }
      
+//     r = document.querySelector('#r'),
+//     g = document.querySelector('#g'),
+//     b = document.querySelector('#b'),
+//     r_out = document.querySelector('#r_out'),
+//     g_out = document.querySelector('#g_out'),
+//     b_out = document.querySelector('#b_out'),
+//     hex_out = document.querySelector('#hex');
+
+// function setColor(){
+//   var r_hex = parseInt(r.value, 10).toString(16),
+//       g_hex = parseInt(g.value, 10).toString(16),
+//       b_hex = parseInt(b.value, 10).toString(16),
+//       hex = "#" + pad(r_hex) + pad(g_hex) + pad(b_hex);
+//   colorSwatch.style.backgroundColor = hex; 
+//   hex_out.value = hex;
+// }
+
+// function pad(n){
+//   return (n.length<2) ? "0"+n : n;
+// }
+
+// r.addEventListener('change', function() {
+//   setColor();
+//   r_out.value = r.value;
+// }, false);
+
+// r.addEventListener('input', function() {
+//   setColor();
+//   r_out.value = r.value;
+// }, false);
+
+// g.addEventListener('change', function() {
+//   setColor();
+//   g_out.value = g.value;
+// }, false);
+
+// g.addEventListener('input', function() {
+//   setColor();
+//   g_out.value = g.value;
+// }, false);
+
+// b.addEventListener('change', function() {
+//   setColor();
+//   b_out.value = b.value;
+// }, false);
+
+// b.addEventListener('input', function() {
+//   setColor();
+//   b_out.value = b.value;
+// }, false);
+
     }
 
-
+    
+ 
     const chngBkgrnd = function(e) {
       document.body.style.backgroundColor = e.target.style.backgroundColor;
       const circleBack = e.target.style.backgroundColor;
@@ -410,9 +524,11 @@ const closeShelf = function(){
   close.style.visibility = 'hidden';
 }
 
-    document.querySelector("#bigClose").addEventListener('click', closeShelf)
+
     document.querySelector("#close").addEventListener('click', closeShelf)
+    document.querySelector("#close").addEventListener('keypress', closeShelf)
     document.querySelector(".open").addEventListener('click', openShelf)
+    document.querySelector(".open").addEventListener('keypress', openShelf)
     document.getElementById("newColor").addEventListener("click", setBg);
 
 
@@ -421,3 +537,5 @@ const closeShelf = function(){
 </body>
 
 </html>
+
+
